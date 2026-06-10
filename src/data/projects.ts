@@ -10,14 +10,17 @@ export type PortfolioProject = {
   overview: string;
   highlights: string[];
   screenshot: string;
+  liveUrl?: string;
+  repositoryUrl?: string;
+  prototypeUrl?: string;
 };
 
 export const portfolioProjects: PortfolioProject[] = [
   {
     slug: "mentorconnect",
     title: "MentorConnect",
-    summary: "A campus-focused social networking platform that helps students connect, collaborate, and build mentor-student communities.",
-    technologies: ["ReactJS", "Node.js", "Express.js", "MongoDB"],
+    summary: "Campus networking platform connecting students, mentors and communities.",
+    technologies: ["React", "Express", "MongoDB"],
     overview:
       "MentorConnect is built for campus life. Students can create profiles, share posts, and engage with peers and mentors in one digital space designed around learning and interaction.",
     highlights: [
@@ -31,8 +34,8 @@ export const portfolioProjects: PortfolioProject[] = [
   {
     slug: "waste2worth",
     title: "Waste2Worth",
-    summary: "A sustainable waste management platform that improves recycling participation through clear tracking and simple community workflows.",
-    technologies: ["Web Development", "Database Management"],
+    summary: "AI-powered sustainability platform promoting responsible waste management.",
+    technologies: ["React", "Node.js", "MongoDB", "Machine Learning"],
     overview:
       "Waste2Worth encourages responsible waste disposal and better segregation habits through a centralized interface where users can track recyclable waste and engage in eco-focused initiatives.",
     highlights: [
@@ -46,17 +49,19 @@ export const portfolioProjects: PortfolioProject[] = [
   {
     slug: "burger-king-redesign",
     title: "Burger King Mobile App Redesign",
-    summary: "A UI/UX redesign case study that improves menu navigation, ordering flow, and checkout usability in a modern mobile interface.",
-    technologies: ["Figma", "UI/UX Design"],
+    summary: "A UI/UX redesign focused on improving navigation, visual hierarchy, and ordering experience.",
+    technologies: ["Figma", "Wireframing", "UI Design", "Prototyping"],
     overview:
-      "This redesign focuses on cleaner visual hierarchy and smoother user journeys from menu exploration to checkout, with an emphasis on consistency, accessibility, and usability.",
+      "Burger King Mobile App Redesign is a student UI/UX redesign project focused on improving navigation, visual hierarchy, and the ordering experience through refreshed screens created in Figma.",
     highlights: [
-      "Wireframes, user flows, prototypes, and high-fidelity screens",
-      "Optimized menu navigation for faster browsing",
-      "Improved ordering and checkout process",
-      "Modern UI system with consistent component behavior",
+      "Cleaner homepage",
+      "Better menu discovery",
+      "Improved navigation",
+      "More consistent visual design",
+      "Better user flow",
     ],
     screenshot: burgerKingRedesignScreenshot,
+    prototypeUrl: "https://www.figma.com/design/MazJxPQ5j26R03EHKvEwiM/Burger-King-Redesign",
   },
 ];
 

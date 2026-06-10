@@ -1,8 +1,7 @@
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ExternalLink } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import spaceBg from "@/assets/space-bg-hd.png";
 import { getProjectBySlug } from "@/data/projects";
-import { BrowserMockup } from "@/components/ui/mockups";
 
 const ProjectDetails = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -30,6 +29,14 @@ const ProjectDetails = () => {
     );
   }
 
+  const projectActions = [
+    { label: "Live Website", href: project.liveUrl },
+    { label: "GitHub Repository", href: project.repositoryUrl },
+  ].filter((action): action is { label: string; href: string } => Boolean(action.href));
+  const isBurgerKingRedesign = project.slug === "burger-king-redesign";
+  const designGoals = ["Improve usability", "Simplify navigation", "Improve visual hierarchy", "Create a cleaner ordering flow", "Modernize the interface"];
+  const designProcess = ["Problem Identification", "Competitive Inspiration", "Wireframing", "UI Exploration", "High-Fidelity Design", "Interactive Prototype"];
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
       <div
@@ -40,9 +47,9 @@ const ProjectDetails = () => {
       />
       <div className="absolute inset-0 bg-background/75" />
 
-      <main className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-20 pt-10 md:px-10">
-        <div className="glass-card">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+      <main className="project-detail-page relative z-10 mx-auto w-full px-6 pb-20 pt-10 md:px-10">
+        <div className="project-detail-shell">
+          <div className="project-detail-nav">
             <Link to="/#projects" className="inline-flex items-center gap-2 rounded-xl border border-primary/45 bg-background/40 px-5 py-2.5 font-nav text-xl uppercase text-foreground nav-link-hover">
               <ArrowLeft className="h-4 w-4" />
               Back To Projects
@@ -50,56 +57,106 @@ const ProjectDetails = () => {
             <span className="rounded-full border border-primary/40 bg-background/55 px-3 py-1 text-xs uppercase tracking-wide text-foreground/80">Project Page</span>
           </div>
 
-          <h1 className="mt-7 font-hero ds-h2">{project.title}</h1>
-          <p className="mt-4 ds-body text-foreground/90">{project.summary}</p>
+          <header className="project-detail-header">
+            <h1>{project.title}</h1>
+            <p>{project.summary}</p>
+            <div className="project-detail-tech" aria-label={`${project.title} tech stack`}>
+              {project.technologies.map((tech) => (
+                <span key={tech}>{tech}</span>
+              ))}
+            </div>
+          </header>
 
-          <div className="glass-card mt-7">
-            <p className="font-nav text-xl uppercase text-primary">Overview</p>
-            <p className="mt-3 text-foreground/90 leading-relaxed">{project.overview}</p>
-          </div>
-
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            <div className="glass-card">
-              <p className="font-nav text-xl uppercase text-primary">Technologies</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {project.technologies.map((tech) => (
-                  <span key={tech} className="rounded-full border border-primary/40 bg-background/70 px-3 py-1 text-sm text-foreground/90">
-                    {tech}
-                  </span>
+          <section className="project-detail-preview" aria-label={`${project.title} preview`}>
+            <p>{isBurgerKingRedesign ? "Final Screens" : "Live Preview"}</p>
+            <div className="project-detail-preview-frame">
+              <img src={project.screenshot} alt={`${project.title} screenshot`} />
+            </div>
+            {isBurgerKingRedesign && project.prototypeUrl && (
+              <div className="project-detail-actions">
+                <a href={project.prototypeUrl} target="_blank" rel="noopener noreferrer" className="btn-primary">
+                  View Figma Prototype
+                  <ExternalLink className="h-5 w-5" />
+                </a>
+              </div>
+            )}
+            {!isBurgerKingRedesign && projectActions.length > 0 && (
+              <div className="project-detail-actions">
+                {projectActions.map((action) => (
+                  <a key={action.label} href={action.href} target="_blank" rel="noopener noreferrer" className={action.label === "Live Website" ? "btn-primary" : "btn-secondary"}>
+                    {action.label}
+                    <ExternalLink className="h-5 w-5" />
+                  </a>
                 ))}
               </div>
-            </div>
+            )}
+          </section>
 
-            <div className="glass-card">
-              <p className="font-nav text-xl uppercase text-primary">Key Highlights</p>
-              <ul className="mt-3 space-y-2 text-foreground/90">
-                {project.highlights.map((item) => (
-                  <li key={item} className="flex items-start gap-2">
-                    <span className="mt-1 h-2 w-2 rounded-full bg-primary" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          {isBurgerKingRedesign ? (
+            <>
+              <div className="project-detail-info-grid">
+                <section className="project-detail-card">
+                  <p className="project-detail-card-title">Project Overview</p>
+                  <p className="project-detail-overview-text">{project.overview}</p>
+                </section>
 
-          <div className="mt-8 grid gap-6">
-            <div>
-              <p className="font-nav text-xl uppercase text-primary">Live Preview</p>
-              <div className="mt-4">
-                <BrowserMockup title={project.title} subtitle={project.summary} imageSrc={project.screenshot} className="w-full" />
+                <section className="project-detail-card">
+                  <p className="project-detail-card-title">Design Goals</p>
+                  <ul className="project-detail-highlights">
+                    {designGoals.map((item) => (
+                      <li key={item}>
+                        <CheckCircle2 className="h-5 w-5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
               </div>
-            </div>
-          </div>
 
-          <div className="glass-card mt-7">
-            <p className="font-nav text-xl uppercase text-primary">Next Step</p>
-            <p className="mt-3 text-foreground/90">If you want, I can add screenshots, design mockups, and GitHub links for this project here.</p>
-            <Link to="/#contact" className="mt-4 inline-flex items-center gap-2 font-nav text-xl uppercase text-primary nav-link-hover">
-              Contact For Full Case Study
-              <ExternalLink className="h-4 w-4" />
-            </Link>
-          </div>
+              <section className="project-detail-card project-detail-wide-card">
+                <p className="project-detail-card-title">Design Process</p>
+                <div className="project-detail-process">
+                  {designProcess.map((item, index) => (
+                    <span key={item}>
+                      <strong>{String(index + 1).padStart(2, "0")}</strong>
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </section>
+
+              <section className="project-detail-card project-detail-wide-card">
+                <p className="project-detail-card-title">Key Improvements</p>
+                <ul className="project-detail-highlights project-detail-improvement-grid">
+                  {project.highlights.map((item) => (
+                    <li key={item}>
+                      <CheckCircle2 className="h-5 w-5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            </>
+          ) : (
+            <div className="project-detail-info-grid">
+              <section className="project-detail-card">
+                <p className="project-detail-card-title">Overview</p>
+                <p className="project-detail-overview-text">{project.overview}</p>
+              </section>
+
+              <section className="project-detail-card">
+                <p className="project-detail-card-title">Key Highlights</p>
+                <ul className="project-detail-highlights">
+                  {project.highlights.map((item) => (
+                    <li key={item}>
+                      <CheckCircle2 className="h-5 w-5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            </div>
+          )}
         </div>
       </main>
     </div>

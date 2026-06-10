@@ -54,6 +54,27 @@ const Index = () => {
     { slug: "burger-king-redesign", icon: Palette, badge: "UI/UX Redesign" },
   ];
 
+  const contactCards = [
+    {
+      title: "GitHub",
+      value: "github.com/tithitalele24-eng",
+      href: "https://github.com/tithitalele24-eng",
+      icon: Github,
+    },
+    {
+      title: "LinkedIn",
+      value: "linkedin.com/in/tithi-talele",
+      href: "https://www.linkedin.com/in/tithi-talele",
+      icon: Linkedin,
+    },
+    {
+      title: "Email",
+      value: "tithi.talele24@spit.ac.in",
+      href: "mailto:tithi.talele24@spit.ac.in",
+      icon: Mail,
+    },
+  ];
+
   useEffect(() => {
     const sections = NAV_ITEMS.map((item) => document.getElementById(item.id)).filter(Boolean) as HTMLElement[];
     const observer = new IntersectionObserver(
@@ -165,8 +186,8 @@ const Index = () => {
         </div>
       </nav>
 
-      <aside className="fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 xl:block" aria-label="Section navigation">
-        <div className="glass-rail flex flex-col gap-3 p-3">
+      <aside className="fixed right-3 top-1/2 z-40 hidden -translate-y-1/2 xl:block" aria-label="Section navigation">
+        <div className="glass-rail flex flex-col gap-2 px-2 py-3">
           {NAV_ITEMS.map((item) => (
             <a
               key={item.id}
@@ -188,7 +209,7 @@ const Index = () => {
           <div className="section-container hero-grid">
             <div className="hero-copy">
               <p className="hero-eyebrow text-label font-nav font-medium uppercase text-primary/90">Machine Learning x Product Design</p>
-              <div className="relative mt-3 inline-block">
+              <div className="relative mt-6 inline-block">
                 <div className="absolute -left-5 -top-5 h-12 w-12 border-l-4 border-t-4 border-foreground/75" />
                 <div className="absolute -bottom-5 -right-5 h-12 w-12 border-b-4 border-r-4 border-foreground/75" />
                 <h1 className="hero-title font-hero text-hero uppercase tracking-tight">Hi, I am Tithi Talele</h1>
@@ -209,10 +230,8 @@ const Index = () => {
             </div>
 
             <div className="hero-visual" aria-hidden="true">
-              <div className="planet-orbit">
-                <div className="astronaut-anchor">
-                  <img src={astronaut} alt="" className="astronaut-img" width={352} height={352} />
-                </div>
+              <div className="astronaut-anchor">
+                <img src={astronaut} alt="" className="astronaut-img" width={352} height={352} />
               </div>
             </div>
           </div>
@@ -232,27 +251,28 @@ const Index = () => {
                 I enjoy creating digital experiences that are both intelligent and visually clear. My focus is building projects where machine learning improves real user workflows, and thoughtful design makes those interactions feel simple, memorable, and human.
               </p>
             </div>
-            <aside className="about-profile mini-card" aria-label="Profile highlights">
-              <div className="about-profile-visual">
-                <img src={astronaut} alt="" className="about-astronaut" width={180} height={180} />
-              </div>
-              <div className="about-profile-content">
-                <p className="about-profile-kicker text-label font-nav font-medium uppercase text-primary/90">Profile Snapshot</p>
-                <div className="about-highlight-list">
-                  <div>
-                    <span>Focus</span>
-                    <strong>ML-powered product experiences</strong>
-                  </div>
-                  <div>
-                    <span>Education</span>
-                    <strong>Computer science and design-driven builds</strong>
-                  </div>
-                  <div>
-                    <span>Toolkit</span>
-                    <strong>Python, React, UI/UX, systems thinking</strong>
-                  </div>
+            <aside className="about-card-stack" aria-label="Capability highlights">
+              <article className="mini-card about-capability-card">
+                <BrainCircuit className="h-5 w-5 text-primary" />
+                <div>
+                  <h3>Machine Learning</h3>
+                  <p>Building intelligent systems and practical AI solutions.</p>
                 </div>
-              </div>
+              </article>
+              <article className="mini-card about-capability-card">
+                <Palette className="h-5 w-5 text-primary" />
+                <div>
+                  <h3>UI/UX Design</h3>
+                  <p>Designing intuitive interfaces, prototypes, and user-centered experiences.</p>
+                </div>
+              </article>
+              <article className="mini-card about-capability-card">
+                <Rocket className="h-5 w-5 text-primary" />
+                <div>
+                  <h3>Development</h3>
+                  <p>Building scalable full-stack applications and digital products.</p>
+                </div>
+              </article>
             </aside>
           </div>
         </section>
@@ -321,10 +341,18 @@ const Index = () => {
                     <h3>{project.title}</h3>
                     <p>{project.summary}</p>
                     <BrowserMockup title={project.title} imageSrc={project.screenshot} className="project-preview" />
-                    <Link to={`/projects/${project.slug}`} className="btn-primary project-button">
-                      Explore
-                      <ArrowUpRight className="h-5 w-5" />
-                    </Link>
+                    <div className="project-actions">
+                      <Link to={`/projects/${project.slug}`} className="btn-primary project-button">
+                        Explore
+                        <ArrowUpRight className="h-5 w-5" />
+                      </Link>
+                      {project.liveUrl && (
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="btn-secondary project-button">
+                          Live Preview
+                          <ArrowUpRight className="h-5 w-5" />
+                        </a>
+                      )}
+                    </div>
                   </article>
                 );
               })}
@@ -333,27 +361,25 @@ const Index = () => {
         </section>
 
         <section id="contact" className="snap-section section-shell pb-12">
-          <div className="section-container glass-panel section-grid two-column">
-            <div>
+          <div className="section-container contact-panel">
+            <div className="contact-heading">
               <p className="text-label font-nav font-medium uppercase text-primary/90">Contact</p>
-              <h2 className="mt-5 font-hero text-section uppercase tracking-tight">Let's build something futuristic together.</h2>
-              <p className="mt-7 max-w-3xl text-body text-foreground/84">
-                Open to collaborations around machine learning, product design, and creative digital experiences. I am available for freelance, contract, and full-time opportunities.
-              </p>
+              <h2 className="mt-5 font-hero text-section uppercase tracking-tight">Connect</h2>
             </div>
-            <div className="contact-actions">
-              <a href="mailto:hello@example.com" className="btn-primary wide">
-                <Mail className="h-5 w-5" />
-                Email Me
-              </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="btn-secondary wide">
-                <Github className="h-5 w-5" />
-                View GitHub
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="btn-secondary wide">
-                <Linkedin className="h-5 w-5" />
-                LinkedIn
-              </a>
+            <div className="contact-card-grid">
+              {contactCards.map((card) => {
+                const Icon = card.icon;
+
+                return (
+                  <a key={card.title} href={card.href} target={card.href.startsWith("mailto:") ? undefined : "_blank"} rel={card.href.startsWith("mailto:") ? undefined : "noopener noreferrer"} className="contact-card">
+                    <span className="contact-card-icon">
+                      <Icon className="h-6 w-6" />
+                    </span>
+                    <span className="contact-card-title">{card.title}</span>
+                    <span className="contact-card-link">{card.value}</span>
+                  </a>
+                );
+              })}
             </div>
           </div>
         </section>
